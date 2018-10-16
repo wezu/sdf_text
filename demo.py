@@ -35,13 +35,27 @@ class App(DirectObject):
         txt4.set_pos(0,0,-275)
         txt4.set_scale(16)
 
+        #color using txt props and juat set color
+        tp_mgr = TextPropertiesManager.get_global_ptr()
+        tp_red = TextProperties()
+        tp_red.set_text_color(0.9, 0, 0, 1)
+        tp_mgr.set_properties("red", tp_red)
+        
+        tp_gray = TextProperties()
+        tp_gray.set_text_color(0.0, 0.9, 0.0, 1)
+        tp_mgr.set_properties("green", tp_gray)
+        
+        tp_blue = TextProperties()
+        tp_blue.set_text_color(0.0, 0.0, 0.9, 1)
+        tp_mgr.set_properties("blue", tp_blue)        
+        
         txt5=SdfText(font)
-        txt5.set_text('You can even have color!')
+        txt5.set_text('\1green\1You\2 \1red\1can\2 even \1blue\1have color\2!')
         txt5.reparent_to(pixel2d)
         txt5.set_pos(0,0,-300)
         txt5.set_scale(32)
         txt5.set_hpr(0,0,35)
-        txt5.set_text_color(1.0, 0.0, 0.0, 1.0)
+        txt5.set_text_color(1.0, 0.2, 0.8, 1.0)
         txt5.set_outline_color(1.0, 1.0, 0.0, 1.0)
 
         txt6=SdfText(font)

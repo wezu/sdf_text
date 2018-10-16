@@ -12,24 +12,26 @@ __all__ = ['SdfText']
 v_shader='''#version 130
 in vec4 p3d_Vertex;
 in vec2 p3d_MultiTexCoord0;
+in vec4 p3d_Color;
 uniform mat4 p3d_ModelViewProjectionMatrix;
 out vec2 uv;
-
+out vec4 txt_color;
 void main()
     {
     gl_Position = p3d_ModelViewProjectionMatrix * p3d_Vertex;
     uv=p3d_MultiTexCoord0;
+    txt_color=p3d_Color;
     }
 '''
 f_shader='''#version 130
 
 uniform sampler2D p3d_Texture0;
-uniform vec4 txt_color;
 uniform vec4 outline_color;
 uniform vec2 outline_offset;
 uniform float outline_power;
 
 in vec2 uv;
+in vec4 txt_color;
 
 void main()
     {
@@ -71,7 +73,6 @@ class SdfText:
         '''Refresh or create the actual geom with the text '''
         self.geom=NodePath(self.txt_node.get_internal_geom())
         self.geom.set_shader(self.__shader, 1)
-        self.geom.set_shader_input('txt_color', self.__txt_color)
         self.geom.set_shader_input('outline_color', self.__outline_color)
         self.geom.set_shader_input('outline_offset', self.__outline_offset)
         self.geom.set_shader_input('outline_power', self.__outline_power)
@@ -109,7 +110,9 @@ class SdfText:
     def set_text_color(self, *color):
         '''Sets text color (rgba) '''
         self.__txt_color=Vec4(*color)
-        self.geom.set_shader_input('txt_color', self.__txt_color)
+        self.txt_node.set_text_color(self.__txt_color)
+        self._make_geom()
+
 
     def set_outline_color(self, *color):
         '''Sets text outline color (rgba) '''
